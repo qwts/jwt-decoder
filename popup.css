@@ -1,0 +1,315 @@
+/* ─── Design Tokens ──────────────────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg-primary:   #1e1e2e;
+  --bg-secondary: #181825;
+  --border:       #313244;
+
+  /* Text */
+  --text-primary: #cdd6f4;
+  --text-muted:   #6c7086;
+  --text-error:   #f38ba8;
+
+  /* Section accent colours */
+  --accent-header:    #f5c2e7;  /* pink   */
+  --accent-payload:   #a6e3a1;  /* green  */
+  --accent-signature: #89b4fa;  /* blue   */
+
+  /* Syntax highlighting */
+  --syntax-key:     #89b4fa;  /* blue   */
+  --syntax-string:  #a6e3a1;  /* green  */
+  --syntax-number:  #fab387;  /* peach  */
+  --syntax-boolean: #cba6f7;  /* mauve  */
+  --syntax-null:    #6c7086;  /* muted  */
+
+  /* Misc */
+  --logo-bg: #4361ee;
+  --radius:  6px;
+  --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+  --font-ui:   -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+body {
+  width: 480px;
+  min-height: 180px;
+  max-height: 680px;
+  overflow-y: auto;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Ensure [hidden] always hides elements */
+[hidden] { display: none !important; }
+
+/* ─── App Shell ──────────────────────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+.app-header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: var(--logo-bg);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+
+.logo-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--text-primary);
+}
+
+/* ─── Main Content ───────────────────────────────────────────────────────── */
+.app-main {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ─── Input Section ──────────────────────────────────────────────────────── */
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.jwt-input {
+  width: 100%;
+  min-height: 72px;
+  max-height: 140px;
+  padding: 10px 34px 10px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  word-break: break-all;
+  transition: border-color 0.15s;
+}
+
+.jwt-input:focus {
+  border-color: var(--logo-bg);
+}
+
+.jwt-input::placeholder {
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.clear-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.clear-btn:hover {
+  color: var(--text-primary);
+}
+
+/* ─── Error ──────────────────────────────────────────────────────────────── */
+.error-msg {
+  padding: 7px 10px;
+  font-size: 12px;
+  color: var(--text-error);
+  background: rgba(243, 139, 168, 0.08);
+  border: 1px solid rgba(243, 139, 168, 0.22);
+  border-radius: var(--radius);
+}
+
+/* ─── Output Panel ───────────────────────────────────────────────────────── */
+.output-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ─── Decoded Block ──────────────────────────────────────────────────────── */
+.decoded-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.decoded-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.block-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+}
+
+.block-label--header    { color: var(--accent-header); }
+.block-label--payload   { color: var(--accent-payload); }
+.block-label--signature { color: var(--accent-signature); }
+
+/* ─── Copy Button ────────────────────────────────────────────────────────── */
+.copy-btn {
+  padding: 2px 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  cursor: pointer;
+  line-height: 1.6;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.copy-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.copy-btn.is-copied {
+  color: var(--accent-payload);
+  border-color: var(--accent-payload);
+}
+
+/* ─── Code Block ─────────────────────────────────────────────────────────── */
+.code-block {
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+  color: var(--text-primary);
+  tab-size: 2;
+}
+
+.code-block--signature {
+  word-break: break-all;
+  white-space: pre-wrap;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─── Syntax Highlighting ────────────────────────────────────────────────── */
+.json-key     { color: var(--syntax-key); }
+.json-string  { color: var(--syntax-string); }
+.json-number  { color: var(--syntax-number); }
+.json-boolean { color: var(--syntax-boolean); }
+.json-null    { color: var(--syntax-null); }
+
+/* ─── Claims Panel ───────────────────────────────────────────────────────── */
+.claims-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.claims-panel:empty {
+  display: none;
+}
+
+.claim-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.claim-field {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--syntax-key);
+}
+
+.claim-date {
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.claim-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.claim-badge--expired {
+  color: var(--text-error);
+  background: rgba(243, 139, 168, 0.12);
+  border: 1px solid rgba(243, 139, 168, 0.28);
+}
+
+.claim-badge--valid {
+  color: var(--accent-payload);
+  background: rgba(166, 227, 161, 0.1);
+  border: 1px solid rgba(166, 227, 161, 0.25);
+}

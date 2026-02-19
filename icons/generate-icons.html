@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generate JWT Decoder Icons</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 32px;
+      background: #1e1e2e;
+      color: #cdd6f4;
+    }
+    h1  { font-size: 20px; margin-bottom: 6px; }
+    p   { color: #7f849c; margin-bottom: 24px; font-size: 14px; }
+    code {
+      background: #313244;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .previews {
+      display: flex;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 28px;
+    }
+    .preview-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #7f849c;
+    }
+    canvas {
+      display: block;
+      /* Nearest-neighbour scaling so small icons stay crisp in preview */
+      image-rendering: pixelated;
+    }
+    .canvas-16  { width: 64px;  height: 64px;  }
+    .canvas-48  { width: 96px;  height: 96px;  }
+    .canvas-128 { width: 128px; height: 128px; }
+    button {
+      padding: 10px 28px;
+      background: #4361ee;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    button:hover { background: #5472f0; }
+    .note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #6c7086;
+    }
+  </style>
+</head>
+<body>
+  <h1>JWT Decoder — Icon Generator</h1>
+  <p>
+    Click <strong>Download All Icons</strong> to save the three PNG files,
+    then move them into the <code>icons/</code> folder next to
+    <code>manifest.json</code>.
+  </p>
+
+  <div class="previews" id="previews"></div>
+
+  <button id="download-btn">Download All Icons</button>
+
+  <p class="note">
+    Icons are drawn at their native resolution; the preview above is scaled
+    up so you can inspect them before downloading.
+  </p>
+
+  <script>
+    const SIZES = [16, 48, 128];
+
+    /**
+     * Draws a single icon at the requested pixel size onto a new canvas.
+     * Design: rounded-rectangle background with an indigo→violet gradient
+     * and a white "J" centred inside.
+     *
+     * @param {number} size
+     * @returns {HTMLCanvasElement}
+     */
+    function drawIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width  = size;
+      canvas.height = size;
+
+      const ctx    = canvas.getContext('2d');
+      const radius = Math.round(size * 0.18);
+
+      // Rounded-rectangle clip path
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.arcTo(size, 0,    size, size, radius);
+      ctx.arcTo(size, size, 0,    size, radius);
+      ctx.arcTo(0,    size, 0,    0,    radius);
+      ctx.arcTo(0,    0,    size, 0,    radius);
+      ctx.closePath();
+
+      // Gradient fill: indigo → violet
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#4361ee');
+      gradient.addColorStop(1, '#7c3aed');
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // "J" letter
+      ctx.fillStyle    = '#ffffff';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      // Slight downward nudge compensates for typical "J" descender visual weight
+      ctx.font = `bold ${Math.round(size * 0.6)}px Arial, sans-serif`;
+      ctx.fillText('J', size / 2, size / 2 + size * 0.04);
+
+      return canvas;
+    }
+
+    // Render previews
+    const previewsEl = document.getElementById('previews');
+    const canvasMap  = {};
+
+    for (const size of SIZES) {
+      const canvas = drawIcon(size);
+      canvasMap[size] = canvas;
+
+      // Add a CSS class for scaled preview display
+      canvas.classList.add(`canvas-${size}`);
+
+      const item = document.createElement('div');
+      item.className = 'preview-item';
+      item.appendChild(canvas);
+      item.appendChild(document.createTextNode(`${size} × ${size}`));
+      previewsEl.appendChild(item);
+    }
+
+    // Download handler
+    document.getElementById('download-btn').addEventListener('click', () => {
+      for (const size of SIZES) {
+        const anchor = document.createElement('a');
+        anchor.href     = canvasMap[size].toDataURL('image/png');
+        anchor.download = `icon${size}.png`;
+        anchor.click();
+      }
+    });
+  </script>
+</body>
+</html>

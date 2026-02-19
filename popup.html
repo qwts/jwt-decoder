@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Decoder</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-badge">J</span>
+        <span class="logo-title">JWT Decoder</span>
+      </div>
+    </header>
+
+    <main class="app-main">
+
+      <!-- Input -->
+      <section class="input-section">
+        <div class="input-wrapper">
+          <textarea
+            id="jwt-input"
+            class="jwt-input"
+            placeholder="Paste your JWT token here…"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            aria-label="JWT token input"
+          ></textarea>
+          <button id="clear-btn" class="clear-btn" aria-label="Clear input" hidden>&#x2715;</button>
+        </div>
+        <div id="error-msg" class="error-msg" role="alert" hidden></div>
+      </section>
+
+      <!-- Output -->
+      <section id="output-panel" class="output-panel" hidden>
+
+        <div class="decoded-block">
+          <div class="decoded-block-header">
+            <span class="block-label block-label--header">Header</span>
+            <button class="copy-btn" data-copy-target="header-output">Copy</button>
+          </div>
+          <pre id="header-output" class="code-block" role="region" aria-label="Decoded header"></pre>
+        </div>
+
+        <div class="decoded-block">
+          <div class="decoded-block-header">
+            <span class="block-label block-label--payload">Payload</span>
+            <button class="copy-btn" data-copy-target="payload-output">Copy</button>
+          </div>
+          <pre id="payload-output" class="code-block" role="region" aria-label="Decoded payload"></pre>
+          <div id="claims-panel" class="claims-panel"></div>
+        </div>
+
+        <div class="decoded-block">
+          <div class="decoded-block-header">
+            <span class="block-label block-label--signature">Signature</span>
+            <button class="copy-btn" data-copy-target="signature-output">Copy</button>
+          </div>
+          <pre id="signature-output" class="code-block code-block--signature" role="region" aria-label="Token signature"></pre>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
