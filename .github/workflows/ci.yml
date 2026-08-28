@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# The default for every job: check out and write nothing. A job that needs
+# more asks at its own call site — `codeql` is the only job here, and only
+# for the SARIF upload (ENG-0149).
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Advanced CodeQL, invoked from this repository's own workflow rather than
+  # GitHub's default setup. Default setup runs as the unselectable
+  # `github-advanced-security[bot]` actor and sits outside the Actions Policy.
+  codeql:
+    name: code scanning
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      security-events: write
+    uses: ./.github/workflows/codeql.yml
