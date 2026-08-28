@@ -46,17 +46,8 @@
         ]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/tools/agent-guard/guard-agent-command.mjs --protocol=claude"
-          }
-        ]
-      },
-      {
+      "PreToolUse": [
+            {
         "hooks": [
           {
             "type": "command",
